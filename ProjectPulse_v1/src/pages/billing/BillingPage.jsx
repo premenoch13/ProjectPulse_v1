@@ -108,12 +108,14 @@ export function BillingPage() {
     setSaving(true);
     setErr("");
     const action = form.guid ? "EDIT" : "CREATE";
+    const original = form.guid ? rows.find((r) => String(r.guid) === String(form.guid)) : null;
+    const statusMeta = { fromStatus: original ? approvalStatusName(original.approvalStatusId) : "", toStatus: approvalStatusName(form.approvalStatusId) };
     callBillingFlow(action, form)
       .then((res) => {
         setRows(res.data);
         setSaving(false);
         setPanel(null);
-        logAudit("Billing", form.guid ? "Update" : "Create", form.milestoneName || projectLabel(form.projectId));
+        logAudit("Billing", form.guid ? "Update" : "Create", form.milestoneName || projectLabel(form.projectId), statusMeta);
         setToast(form.guid ? "Billing record updated." : "Billing submitted.");
       })
       .catch((e) => {
