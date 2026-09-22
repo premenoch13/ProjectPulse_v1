@@ -66,20 +66,20 @@ export const AUDIT_FLOW_URL = "/auditflow";
 // matching redirect — it MUST be listed before the /flow redirect.
 export const NEW_FLOW_URL = "/flow2";
 
-export function callAuditEmailFlow(entry) {
+// GENERIC mailer over the SAME /auditflow flow — the flow's trigger schema
+// now carries { to, cc, subject, body } and its Send an email (V2) action
+// reads those four fields directly (see the flow-edit note in utils/mail.js).
+// This lets the app call the ONE flow twice per event with different
+// recipients + HTML per audience (Audit team vs Finance/PM/Management),
+// instead of needing a second flow or a Switch branch.
+export function callAuditEmailFlow({ to, cc = "", subject, body }) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), FLOW_TIMEOUT_MS);
 
   return fetch(AUDIT_FLOW_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      entity: entry.screen,
-      action: entry.action,
-      data: entry.record,
-      by: entry.user,
-      dateTime: entry.timestamp,
-    }),
+    body: JSON.stringify({ to, cc, subject, body }),
     signal: controller.signal,
   })
     .then((res) => {
