@@ -262,7 +262,10 @@ export function ProjectDashboardPage() {
       .then((projectGuid) => refresh({ skipDocuments: true }).then(() => projectGuid))
       .then((projectGuid) => {
         setSaving(false);
-        logAudit("Project", wasAdd ? "Create" : "Update", form.projectName || form.projectCode || "record");
+        logAudit("Project", wasAdd ? "Create" : "Update", form.projectName || form.projectCode || "record", {
+          fromStatus: wasAdd ? "" : findName(lookups.projectStatuses, (projects.find((p) => String(p.guid) === String(form.guid)) || {}).projectStatusId),
+          toStatus: findName(lookups.projectStatuses, form.projectStatusId),
+        });
         if (wasAdd && projectGuid) {
           setToast("Project added.");
           openEdit({ ...form, guid: projectGuid, resources: form.resources, documents: [] });
