@@ -4,12 +4,10 @@ import {
   Globe2,
   User,
   Handshake,
-  CheckCircle2,
   CalendarClock,
   Briefcase,
   Shield,
   Receipt,
-  UserCog,
   Flag,
   Users2,
   FolderKanban,
@@ -39,7 +37,8 @@ export const ADMIN_MODULES = [
   { key: "currency", label: "Currency", icon: Coins, color: "#22A06B", implemented: true },
   { key: "invoice-status", label: "Invoice Status", icon: Receipt, color: "#3B6FE0", implemented: true },
   { key: "permissions", label: "Permissions", icon: KeyRound, color: "#E11D48", implemented: true },
-  // Parked per meeting notes #9, #15 — screens removed from nav, tables/flows left untouched:
+  // Parked per meeting notes #9, #15 — screens removed from nav, tables/flows left untouched.
+  // Re-add UserCog / CheckCircle2 to the lucide import if these are restored:
   // { key: "user-roles", label: "Designation", icon: UserCog, color: "#0EA5A4", implemented: true },
   // { key: "approval-status", label: "Approval Status", icon: CheckCircle2, color: "#F59E0B", implemented: true },
 ];
@@ -69,8 +68,9 @@ export const AUDIT_MODULES = [
 // (Finance submission/approval mails, billing reminders, approval
 // requests, etc. — see utils/audit.js). "Create" access on this module
 // = allowed to send Finance and Approval mails.
+// Key MUST match dbo.module.ModuleKey exactly ("mail-notification").
 export const MAIL_MODULES = [
-  { key: "mail-notifications", label: "Mail Notifications", icon: Mail, color: "#0EA5A4", implemented: true },
+  { key: "mail-notification", label: "Mail Notification", icon: Mail, color: "#0EA5A4", implemented: true },
 ];
 
 export const MODULES = [...ADMIN_MODULES, ...PROJECT_MODULES, ...FINANCE_MODULES, ...AUDIT_MODULES, ...MAIL_MODULES];
